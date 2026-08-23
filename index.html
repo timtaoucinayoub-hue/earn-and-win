@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP REWARDS - منصة الأرباح</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+        body { background: #0f172a; color: #fff; padding: 15px; text-align: center; }
+        
+        .header { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 2px solid #6366f1; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3); }
+        .balance-title { color: #94a3b8; font-size: 14px; margin-bottom: 5px; }
+        .balance-amount { font-size: 32px; color: #38bdf8; font-weight: 800; }
+        .vip-badge { background: #f59e0b; color: #000; font-size: 12px; font-weight: bold; padding: 3px 8px; border-radius: 20px; text-transform: uppercase; display: inline-block; margin-bottom: 10px; }
+
+        .wheel-box { background: #1e293b; border-radius: 16px; padding: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+        .wheel-title { color: #f59e0b; font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+        .spin-btn { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-size: 18px; font-weight: bold; border: none; padding: 15px 30px; border-radius: 30px; width: 100%; cursor: pointer; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); transition: transform 0.2s; }
+        .spin-btn:active { transform: scale(0.95); }
+
+        .referral-box { background: linear-gradient(135deg, #065f46, #047857); border-radius: 16px; padding: 20px; margin-bottom: 20px; text-align: right; }
+        .ref-title { font-size: 18px; font-weight: bold; color: #34d399; margin-bottom: 8px; }
+        .ref-desc { font-size: 13px; color: #a7f3d0; margin-bottom: 15px; line-height: 1.5; }
+        
+        .leaderboard { background: #1e293b; border-radius: 16px; padding: 20px; text-align: right; border: 1px solid #334155; }
+        .lb-title { font-size: 18px; font-weight: bold; color: #38bdf8; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+        .lb-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #0f172a; font-size: 14px; }
+        .lb-name { color: #cbd5e1; }
+        .lb-win { color: #4ade80; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <span class="vip-badge">حساب مجاني VIP</span>
+        <div class="balance-title">أرباحك القابلة للسحب</div>
+        <div class="balance-amount">$<span id="balance">1.50</span></div>
+    </div>
+
+    <div class="wheel-box">
+        <div class="wheel-title">🎁 عجلة الحظ اليومية</div>
+        <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">ادفع عجلة الحظ واكسب حتى $5.00 فوراً!</p>
+        <button class="spin-btn" onclick="spinWheel()">جرب حظك الآن (مجاناً)</button>
+    </div>
+
+    <div class="referral-box">
+        <div class="ref-title">🚀 ضاعف أرباحك 10 مرات!</div>
+        <div class="ref-desc">شارِك رابطك الخاص مع أصدقائك. ستحصل على 20% من كل أرباحهم مدى الحياة + $0.50 بونص فور تسجيل كل صديق!</div>
+        <button class="spin-btn" style="background: #fff; color: #065f46;" onclick="copyLink()">نسخ رابط الإحالة الخاص بك</button>
+    </div>
+
+    <div class="leaderboard">
+        <div class="lb-title">🔥 أحدث السحوبات المباشرة اليوم</div>
+        <div class="lb-item">
+            <span class="lb-name">أحمد م. (الجزائر)</span>
+            <span class="lb-win">سحب $25.00 عبر Payeer</span>
+        </div>
+        <div class="lb-item">
+            <span class="lb-name">سارة ك. (مصر)</span>
+            <span class="lb-win">سحبت $50.00 عبر USDT</span>
+        </div>
+        <div class="lb-item">
+            <span class="lb-name">أيوب ع. (المغرب)</span>
+            <span class="lb-win">سحب $12.50 عبر Vodafone</span>
+        </div>
+    </div>
+
+    <script>
+        let balance = 1.50;
+        let canSpin = true;
+
+        function spinWheel() {
+            if (!canSpin) {
+                alert("لقد استخدمت محاولتك اليومية! استدعِ صديقاً للحصول على محاولة إضافية.");
+                return;
+            }
+            
+            let win = (Math.random() * (0.90) + 0.10).toFixed(2);
+            balance = (parseFloat(balance) + parseFloat(win)).toFixed(2);
+            
+            document.getElementById('balance').innerText = balance;
+            canSpin = false;
+            
+            alert('🎉 مبروك! ربحت $' + win + ' تم إضافتها لرصيدك.');
+        }
+
+        function copyLink() {
+            alert("تم نسخ رابط الإحالة الخاص بك! شاركه مع أصدقائك في مجموعات الفيسبوك وتلغرام لكسب المال تلقائياً.");
+        }
+    </script>
+
+</body>
+</html>
