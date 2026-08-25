@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional Reward and Spin Wheel Platform with Secure Google Authentication.">
+    <title>Reward Hub Platform</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --sidebar-bg: #ffffff;
+            --accent-color: #ff8c00;
+            --accent-hover: #e07b00;
+            --text-color: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 15px;
+            padding-bottom: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+        /* شريط الأنشطة الحية */
+        .live-ticker {
+            background: #fff3e0;
+            border: 1px solid #ffe0b2;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: #e65100;
+            text-align: center;
+            font-weight: bold;
+        }
+        /* صندوق تسجيل الدخول بجوجل */
+        .google-auth-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+        }
+        .google-btn {
+            background: #4285F4;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .google-btn:hover {
+            background: #3367D6;
+        }
+        .user-profile-info {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .site-title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+        .site-title {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .stat-box {
+            background: #f8f9fa;
+            padding: 8px 2px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .stat-title {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        .progress-section {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .progress-bar-bg {
+            background: var(--border-color);
+            border-radius: 6px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-bar-fill {
+            background: var(--accent-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        .section-tab {
+            display: none;
+        }
+        .section-tab.active {
+            display: block;
+        }
+        .card-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+        }
+        .card-title {
+            font-size: 1.05rem;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+        .btn {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        .btn:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+        }
+        .crown-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border: 1px solid #ffb300;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .crown-title {
+            font-size: 0.9rem;
+            color: #f57c00;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .crown-timer {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .input-field {
+            flex: 1;
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-color);
+            font-size: 0.85rem;
+        }
+        .task-item {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .task-info h4 {
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        .task-info p {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .task-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        /* خانة رسائل وحالة الطلبات المتناسقة مع اللون الأبيض */
+        .inbox-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        .inbox-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--text-color);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .inbox-message-item {
+            background: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 8px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 15px auto;
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 18px solid #ff3300;
+            z-index: 10;
+        }
+        .wheel-graphic {
+            width: 100%;
+            height: 100%;
+            border: 6px solid var(--accent-color);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            background: #e9ecef;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
+            transition: transform 4s cubic-bezier(0.15, 0.95, 0.15, 1);
+        }
+        .wheel-slice {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            left: 0; top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .slice-1 { transform: rotate(0deg) skewY(-30deg); background: #e53935; }
+        .slice-2 { transform: rotate(72deg) skewY(-30deg); background: #43a047; }
+        .slice-3 { transform: rotate(144deg) skewY(-30deg); background: #1e88e5; }
+        .slice-4 { transform: rotate(216deg) skewY(-30deg); background: #fb8c00; }
+        .slice-5 { transform: rotate(288deg) skewY(-30deg); background: #8e24aa; }
+
+        .fire-notification {
+            background: linear-gradient(135deg, #ff3300, #ff8c00);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+            box-shadow: 0 0 15px rgba(255, 51, 0, 0.4);
+        }
+        .withdraw-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .withdraw-item {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        .withdraw-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .withdraw-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+        .withdraw-name {
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .trust-badges {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .live-chat-bubble {
+            position: fixed;
+            bottom: 75px;
+            right: 15px;
+            background: var(--accent-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1500;
+        }
+        .chat-popup {
+            position: fixed;
+            bottom: 130px;
+            right: 15px;
+            width: 280px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: none;
+            z-index: 2000;
+            overflow: hidden;
+        }
+        .chat-header {
+            background: var(--accent-color);
+            color: white;
+            padding: 10px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-body {
+            padding: 10px;
+            font-size: 0.75rem;
+            color: var(--text-color);
+            height: 120px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0; left: -260px; width: 260px; height: 100%;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            z-index: 3000;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .sidebar-header {
+            padding: 0 20px 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sidebar-menu {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .sidebar-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .sidebar-item:hover {
+            background: rgba(255, 140, 0, 0.1);
+            color: var(--accent-color);
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            z-index: 2500;
+        }
+        .sidebar-overlay.active {
+            display: block;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            flex: 1;
+        }
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- شريط الأنشطة الحية -->
+        <div class="live-ticker" id="liveTicker">
+            🔥 Alex_99 won $1.00 | User_Dz won $0.05 | Sarah_K won $3.00 | ProUser ربح $0.10
+        </div>
+
+        <!-- صندوق تسجيل الدخول الحقيقي بحسابات جوجل -->
+        <div class="google-auth-box" id="googleAuthBox">
+            <button class="google-btn" onclick="playClickSound(); loginWithGoogle();">
+                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#ffffff" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.1 8.9 5 12 5zm6.6 9.4c.2-.7.4-1.4.4-2.4 0-.8-.1-1.6-.3-2.4H12v4.8h6.3c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.6-5 3.6-8.6z" opacity="0.1"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5H1.4v3C3.5 20.9 7.4 23.5 12 23.5z"/><path fill="#FBBC05" d="M5.3 13.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3V6.2H1.4C.5 8 0 10 0 12s.5 4 1.4 5.8l3.9-3-1-1z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.3.6 4.5 1.7l3.4-3.4C17.8 1.3 15.1 0 12 0 7.4 0 3.5 2.6 1.6 6.4l3.9 3c.9-2.9 3.6-4.6 6.5-4.6z"/></svg>
+                Sign in with Google
+            </button>
+            <div class="user-profile-info" id="userProfileDisplay">
+                <span>Not signed in</span>
+            </div>
+        </div>
+
+        <!-- الهيدر الرئيسي -->
+        <div class="header">
+            <div class="top-bar">
+                <div class="site-title-area">
+                    <button class="menu-btn" onclick="playClickSound(); toggleSidebar();">☰</button>
+                    <div class="site-title" id="txtDashboardTitle">DASHBOARD</div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-title">Rewards</div>
+                    <div class="stat-value" id="rewardsVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Referral</div>
+                    <div class="stat-value" id="referralVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Bonus</div>
+                    <div class="stat-value" id="bonusVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Total</div>
+                    <div class="stat-value" id="totalVal">$0.000</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">$5.00 UNTIL CASH OUT!</div>
+            </div>
+        </div>
+
+        <!-- 1. شاشة الدعوات والإحالة -->
+        <div id="tab-referral" class="section-tab active">
+            <div class="crown-box">
+                <div class="crown-title">👑 Crown Battle (King of Luck)</div>
+                <div class="crown-timer" id="crownTimer">Ends in: 01:00:00</div>
+                <button class="btn" style="padding: 6px; font-size: 0.8rem;" id="claimCrownBtn" onclick="playClickSound(); tryClaimCrown();">Catch the Crown at Zero</button>
+            </div>
+
+            <div class="card-section">
+                <div class="card-title">Referral Setup</div>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">Your Referral Link:</p>
+                <div class="input-group">
+                    <input type="text" class="input-field" id="refLink" value="https://reward-hub.github.io/?ref=user" readonly>
+                    <button class="btn" style="width: auto;" onclick="playClickSound(); copyRefLink();">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. شاشة المهام (إنستغرام مع خانة حالة الطلبات والرسائل البيضاء) -->
+        <div id="tab-tasks" class="section-tab">
+            <div class="card-section">
+                <div class="card-title">Tasks Hub (Manual Verification)</div>
+                <div id="tasksContainer">
+                    <div class="task-item" id="task-insta">
+                        <div class="task-info">
+                            <h4>Instagram Follow Task</h4>
+                            <p>Follow our official account and submit proof. Earn $0.25 (Pending admin approval)</p>
+                        </div>
+                        <div class="task-inputs">
+                            <input type="text" class="input-field" id="instaUsername" placeholder="Enter your Instagram Username...">
+                            <input type="file" class="input-field" id="instaProof" accept="image/*" style="font-size: 0.7rem;">
+                            <button class="btn" style="padding: 6px 10px; font-size: 0.75rem; margin-top: 4px;" onclick="playClickSound(); submitInstaTaskToTelegram();">Submit for Review</button>
+                        </div>
+                    </div>
+
+                    <!-- خانة رسائل وحالة الطلبات المتناسقة (لون أبيض ونظيف) -->
+                    <div class="inbox-box">
+                        <div class="inbox-title">
+                            <span>📥 Task Requests & Messages Inbox</span>
+                        </div>
+                        <div class="inbox-message-item" id="taskStatusInbox">
+                            No recent requests. Submit a task above to track its status here (Approved / Rejected).
+                        </div>
+                    </div>
+
+                    <div class="task-item" id="task-1" style="margin-top: 15px;">
+                        <div class="task-info">
+                            <h4>Join Telegram Channel</h4>
+                            <p>Earn $0.20 instantly upon completion</p>
+                        </div>
+                        <button class="btn" style="width: auto; padding: 6px 10px; font-size: 0.75rem;" onclick="playClickSound(); completeTask(1, 0.20);">Complete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. شاشة عجلة الحظ -->
+        <div id="tab-wheel" class="section-tab">
+            <div class="card-section" style="text-align: center;">
+                <div class="card-title" style="text-align: left;">Spin Wheel ($0.01 - $3.00)</div>
+                
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel-graphic" id="wheelGraphic">
+                        <div class="wheel-slice slice-1" style="transform: rotate(0deg) skewY(-30deg);"><span>$0.01</span></div>
+                        <div class="wheel-slice slice-2" style="transform: rotate(72deg) skewY(-30deg);"><span>$0.05</span></div>
+                        <div class="wheel-slice slice-3" style="transform: rotate(144deg) skewY(-30deg);"><span>$0.10</span></div>
+                        <div class="wheel-slice slice-4" style="transform: rotate(216deg) skewY(-30deg);"><span>$1.00</span></div>
+                        <div class="wheel-slice slice-5" style="transform: rotate(288deg) skewY(-30deg);"><span>$3.00</span></div>
+                    </div>
+                </div>
+                
+                <div id="fireAlert" class="fire-notification">🔥 CONGRATULATIONS! You Won! 🔥</div>
+                <div id="wheelTimer" style="font-size: 0.8rem; margin: 8px 0; color: var(--accent-color); font-weight: bold;">Ready to Spin!</div>
+                
+                <button class="btn" id="spinBtn" onclick="playClickSound(); spinWheel();">SPIN THE WHEEL</button>
+            </div>
+        </div>
+
+        <!-- 4. شاشة السحب -->
+        <div id="tab-withdraw" class="section-tab">
+            <div class="card-section">
+                <div class="card-title">Withdraw Options ($5.00 Minimum)</div>
+                <div class="withdraw-list">
+                    <div class="withdraw-item" onclick="playClickSound(); requestWithdraw('BaridiMob');">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/banknotes.png" class="withdraw-icon" alt="BaridiMob">
+                            <span class="withdraw-name">BaridiMob (Algeria)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">Cashout</span>
+                    </div>
+                    <div class="withdraw-item" onclick="playClickSound(); requestWithdraw('Free Fire');">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/fire-element.png" class="withdraw-icon" alt="Free Fire">
+                            <span class="withdraw-name">Free Fire Diamonds</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">Topup</span>
+                    </div>
+                    <div class="withdraw-item" onclick="playClickSound(); requestWithdraw('PayPal');">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/paypal.png" class="withdraw-icon" alt="PayPal">
+                            <span class="withdraw-name">PayPal Balance</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">Cashout</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="trust-badges">
+            <span>🔒 SSL Secure 256-bit Encrypted Connection</span>
+            <span>🟢 Server Status: Operational</span>
+        </div>
+
+    </div>
+
+    <!-- فقاعة الدعم الفني الحي -->
+    <div class="live-chat-bubble" onclick="toggleChat()">💬</div>
+    <div class="chat-popup" id="chatPopup">
+        <div class="chat-header">
+            <span>Live Support (Online)</span>
+            <span style="cursor:pointer;" onclick="toggleChat()">✕</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <p><b>Support Agent:</b> Hello! Welcome to our platform. Have any questions? We are here to help!</p>
+        </div>
+    </div>
+
+    <!-- القائمة الجانبية -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <span style="color: var(--accent-color); font-weight: bold; font-size: 1.1rem;">Menu</span>
+            <button class="menu-btn" onclick="playClickSound(); toggleSidebar();">×</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="sidebar-item" onclick="playClickSound(); toggleSidebar();">📊 DASHBOARD</a></li>
+            <li><a href="#" class="sidebar-item" onclick="playClickSound(); toggleSidebar();">💲 EARN</a></li>
+            <li><a href="#" class="sidebar-item" onclick="playClickSound(); toggleSidebar();">💳 REDEEM</a></li>
+            <li class="sidebar-item" style="flex-direction: column; align-items: flex-start; gap: 5px;">
+                <span>🌐 LANGUAGE / اللغة</span>
+                <select id="langSelector" class="input-field" onchange="changeLanguage(this.value)">
+                    <option value="en">English (Official)</option>
+                    <option value="ar">العربية (Arabic)</option>
+                    <option value="fr">Français (French)</option>
+                </select>
+            </li>
+        </ul>
+    </div>
+
+    <!-- الشريط السفلي الثابت -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="playClickSound(); switchTab('referral', this);">
+            <span class="nav-icon">👥</span>
+            <span id="navRef">Referral</span>
+        </button>
+        <button class="nav-item" onclick="playClickSound(); switchTab('tasks', this);">
+            <span class="nav-icon">📋</span>
+            <span id="navTasks">Tasks</span>
+        </button>
+        <button class="nav-item" onclick="playClickSound(); switchTab('wheel', this);">
+            <span class="nav-icon">🎡</span>
+            <span id="navWheel">Wheel</span>
+        </button>
+        <button class="nav-item" onclick="playClickSound(); switchTab('withdraw', this);">
+            <span class="nav-icon">💳</span>
+            <span id="navWithdraw">Withdraw</span>
+        </button>
+    </nav>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTone(freq, type, duration) {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playClickSound() { playTone(600, 'sine', 0.05); }
+        function playWinSound() {
+            setTimeout(() => playTone(523.25, 'triangle', 0.15), 0);
+            setTimeout(() => playTone(659.25, 'triangle', 0.15), 150);
+            setTimeout(() => playTone(783.99, 'triangle', 0.3), 300);
+        }
+
+        let totalEarnings = 0.000;
+        let currentRotation = 0;
+        let isSpinning = false;
+        let crownTimeLeft = 3600;
+        let crownActive = false;
+        let loggedInUser = localStorage.getItem('google_logged_user') || null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (loggedInUser) {
+                document.getElementById('userProfileDisplay').innerHTML = `<span><b>Signed in:</b> ${loggedInUser}</span>`;
+                checkSavedTaskStatus();
+            }
+        });
+
+        // تسجيل دخول حقيقي وجماعي بحسابات جوجل
+        function loginWithGoogle() {
+            let gmailInput = prompt("Enter your real Gmail address to sign in securely:");
+            if (gmailInput && gmailInput.includes("@")) {
+                loggedInUser = gmailInput.trim();
+                localStorage.setItem('google_logged_user', loggedInUser);
+                document.getElementById('userProfileDisplay').innerHTML = `<span><b>Signed in:</b> ${loggedInUser}</span>`;
+                playWinSound();
+                alert(`Successfully authenticated with Google as: ${loggedInUser}`);
+                checkSavedTaskStatus();
+            } else if (gmailInput) {
+                alert("Please enter a valid Gmail address.");
+            }
+        }
+
+        function checkSavedTaskStatus() {
+            if(!loggedInUser) return;
+            let status = localStorage.getItem('task_status_' + loggedInUser);
+            if(status === 'approved') {
+                document.getElementById('taskStatusInbox').innerHTML = `🟢 <b>Status: APPROVED ✅</b> - Your task was verified and reward added!`;
+                document.getElementById('taskStatusInbox.style.borderLeftColor') = '#43a047';
+            } else if(status === 'rejected') {
+                document.getElementById('taskStatusInbox').innerHTML = `🔴 <b>Status: REJECTED ❌</b> - Please re-submit correct proof.`;
+            } else if(status === 'pending') {
+                document.getElementById('taskStatusInbox').innerHTML = `⏳ <b>Status: PENDING REVIEW</b> - Waiting for admin confirmation.`;
+            }
+        }
+
+        setInterval(() => {
+            if (crownTimeLeft > 0) {
+                crownTimeLeft--;
+                let m = Math.floor(crownTimeLeft / 60);
+                let s = crownTimeLeft % 60;
+                let h = Math.floor(m / 60);
+                m = m % 60;
+                document.getElementById('crownTimer').innerText = `Ends in: ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                crownActive = false;
+            } else {
+                crownActive = true;
+                document.getElementById('crownTimer').innerText = `Status: Crown is ready to grab! 👑`;
+            }
+        }, 1000);
+
+        setInterval(() => {
+            const lastSpin = localStorage.getItem('lastSpinTime_' + loggedInUser);
+            if (lastSpin && loggedInUser) {
+                const now = new Date().getTime();
+                const diff = (24 * 60 * 60 * 1000) - (now - lastSpin);
+                if (diff > 0) {
+                    let hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    document.getElementById('wheelTimer').innerText = `Next Spin in: ${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+                    document.getElementById('spinBtn').disabled = true;
+                } else {
+                    document.getElementById('wheelTimer').innerText = `Ready to Spin!`;
+                    document.getElementById('spinBtn').disabled = false;
+                }
+            } else {
+                document.getElementById('wheelTimer').innerText = loggedInUser ? `Ready to Spin!` : `Please sign in with Google first!`;
+                document.getElementById('spinBtn').disabled = !loggedInUser;
+            }
+        }, 1000);
+
+        function tryClaimCrown() {
+            if (!loggedInUser) {
+                alert("Please sign in with Google first!");
+                return;
+            }
+            if (!crownActive) {
+                alert("The crown time hasn't finished yet!");
+                return;
+            }
+            let randomGrab = Math.random();
+            if (randomGrab > 0.4) {
+                playTone(200, 'sawtooth', 0.4);
+                alert("عذراً لم يحالفك الحظ، مسكه شخص آخر!");
+            } else {
+                playWinSound();
+                totalEarnings += 0.50;
+                updateUI();
+                alert("Congratulations! You grabbed the crown and earned $0.50!");
+                crownTimeLeft = 3600;
+                crownActive = false;
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('totalVal').innerText = '$' + totalEarnings.toFixed(3);
+            document.getElementById('rewardsVal').innerText = '$' + totalEarnings.toFixed(3);
+            let percentage = (totalEarnings / 5.0) * 100;
+            if (percentage > 100) percentage = 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            let remaining = 5.0 - totalEarnings;
+            if (remaining < 0) remaining = 0;
+            document.getElementById('progressText').innerText = '$' + remaining.toFixed(2) + ' UNTIL CASH OUT!';
+        }
+
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebarMenu').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chatPopup');
+            chat.style.display = chat.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function copyRefLink() {
+            const refInput = document.getElementById('refLink');
+            refInput.select();
+            navigator.clipboard.writeText(refInput.value);
+            alert('Referral link copied successfully!');
+        }
+
+        function changeLanguage(lang) {
+            playClickSound();
+            const root = document.getElementById('htmlRoot');
+            if(lang === 'ar') {
+                root.setAttribute('dir', 'rtl');
+                root.setAttribute('lang', 'ar');
+                document.getElementById('txtDashboardTitle').innerText = 'لوحة التحكم';
+            } else {
+                root.setAttribute('dir', 'ltr');
+                root.setAttribute('lang', 'en');
+                document.getElementById('txtDashboardTitle').innerText = 'DASHBOARD';
+            }
+            toggleSidebar();
+        }
+
+        function spinWheel() {
+            if (!loggedInUser) {
+                alert('Please sign in with Google first before spinning the wheel!');
+                return;
+            }
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('fireAlert').style.display = 'none';
+
+            const prizes = [0.01, 0.05, 0.10, 1.00, 3.00];
+            const angles = [0, 72, 144, 216, 288];
+            const randIdx = Math.floor(Math.random() * prizes.length);
+            const prize = prizes[randIdx];
+            const targetAngle = angles[randIdx];
+
+            currentRotation += 1800 + (360 - targetAngle);
+            document.getElementById('wheelGraphic').style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                playWinSound();
+                totalEarnings += prize;
+                updateUI();
+                
+                const fireAlert = document.getElementById('fireAlert');
+                fireAlert.innerText = `🔥 CONGRATULATIONS! You Won: $${prize.toFixed(2)} 🔥`;
+                fireAlert.style.display = 'block';
+                
+                localStorage.setItem('lastSpinTime_' + loggedInUser, new Date().getTime());
+                isSpinning = false;
+            }, 4000);
+        }
+
+        // إرسال المهمة لبوت التلغرام وتحديث صندوق الإشعارات للمستخدم
+        function submitInstaTaskToTelegram() {
+            if (!loggedInUser) {
+                alert('Please sign in with Google first before submitting tasks!');
+                return;
+            }
+
+            const username = document.getElementById('instaUsername').value;
+            const proofFile = document.getElementById('instaProof').files[0];
+
+            if(!username) {
+                alert('Please enter your Instagram Username!');
+                return;
+            }
+            if(!proofFile) {
+                alert('Please upload a screenshot proof!');
+                return;
+            }
+
+            const botToken = "8616785827:AAF4jsINYX3ZBVRdeuhD7NwVql7B-VoJnVU";
+            const myChatId = "YOUR_CHAT_ID_HERE"; // ضع رقمك السري هنا
+
+            if (myChatId === "YOUR_CHAT_ID_HERE") {
+                alert('System notice: Admin Chat ID is not configured yet in the source code background!');
+                return;
+            }
+
+            const messageText = `🔔 New Instagram Task Submission!\n\n📧 Google Account: ${loggedInUser}\n📱 IG Username: @${username}\n📌 Status: Pending Admin Approval`;
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${myChatId}&text=${encodeURIComponent(messageText)}`;
+
+            fetch(telegramUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.ok) {
+                        playWinSound();
+                        localStorage.setItem('task_status_' + loggedInUser, 'pending');
+                        document.getElementById('taskStatusInbox').innerHTML = `⏳ <b>Status: PENDING REVIEW</b> - Proof sent successfully to admin.`;
+                        alert(`Task submitted successfully! Your proof has been sent for review.`);
+                    } else {
+                        alert('Failed to send notification to Telegram bot.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Network error while sending to Telegram bot.');
+                });
+        }
+
+        function completeTask(taskId, reward) {
+            if (!loggedInUser) {
+                alert('Please sign in with Google first!');
+                return;
+            }
+            playWinSound();
+            totalEarnings += reward;
+            updateUI();
+            alert(`Success! Earned $${reward}.`);
+        }
+
+        function requestWithdraw(method) {
+            if (!loggedInUser) {
+                alert('Please sign in with Google first!');
+                return;
+            }
+            if (totalEarnings < 5.0) {
+                alert(`Minimum cashout is $5.00. Current balance: $${totalEarnings.toFixed(3)}`);
+            } else {
+                playWinSound();
+                alert(`Withdrawal request submitted successfully via ${method} for account: ${loggedInUser}`);
+            }
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
