@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="موقع عجلة الحظ للربح، أدر واربح الجوائز، ادعُ أصدقاءك، واطلب سحب أرباحك عبر بريدي موب، فري فاير، ببجي، باي بال، وفيزا.">
+    <meta name="keywords" content="عجلة الحظ, ربح المال, بريدي موب, شحن فري فاير, شحن ببجي, باي بال, فيزا">
+    <title>عجلة الحظ الاحترافية</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff8c00;
+            --accent-hover: #e07b00;
+            --text-color: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+            --fire-color: #ff3300;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 15px;
+            padding-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+        /* شريط الإشعارات الحي المتحرك */
+        .live-ticker {
+            background: #252525;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 10px;
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+        /* الهيدر وقائمة الإعدادات (الثلاث شرطات) */
+        .header {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .site-title-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+        .site-title {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .user-id {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        /* مربعات الأرصدة */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .stat-box {
+            background: #252525;
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .stat-title {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        /* شريط التقدم للسحب */
+        .progress-section {
+            background: #252525;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .progress-bar-bg {
+            background: var(--border-color);
+            border-radius: 6px;
+            height: 10px;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-bar-fill {
+            background: var(--accent-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+        /* الأقسام العامة */
+        .section-tab {
+            display: none;
+        }
+        .section-tab.active {
+            display: block;
+        }
+        .card-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+        }
+        .card-title {
+            font-size: 1.05rem;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+        .btn {
+            background-color: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        .btn:disabled {
+            background-color: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+        /* قسم التاج التنافسي */
+        .crown-box {
+            background: linear-gradient(135deg, #252010, #1e1e1e);
+            border: 1px solid #ffd700;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .crown-title {
+            font-size: 0.9rem;
+            color: #ffd700;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .crown-timer {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        /* قائمة الدعوات والبريد */
+        .ref-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .input-field {
+            flex: 1;
+            background: #252525;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            color: var(--text-color);
+            font-size: 0.85rem;
+        }
+        /* المهام ونظام الـ 3 أيام */
+        .task-item {
+            background: #252525;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        .task-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        /* تصميم عجلة الحظ */
+        .wheel-box {
+            text-align: center;
+            padding: 15px 0;
+        }
+        .wheel-graphic {
+            width: 170px;
+            height: 170px;
+            border: 6px solid var(--accent-color);
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: radial-gradient(circle, #252525 0%, #151515 100%);
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+            transition: transform 4s cubic-bezier(0.15, 0.95, 0.15, 1);
+            position: relative;
+        }
+        /* إشعار ناري احتفالي */
+        .fire-notification {
+            background: linear-gradient(135deg, #ff3300, #ff8c00);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            display: none;
+            box-shadow: 0 0 15px rgba(255, 51, 0, 0.8);
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+        /* قائمة السحب بمسافات مريحة وعمودية مع الصور */
+        .withdraw-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* مسافة مريحة بين الخيارات */
+            margin-top: 10px;
+        }
+        .withdraw-item {
+            background: #252525;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .withdraw-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .withdraw-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .withdraw-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        /* نافذة الإعدادات المنبثقة (Modal) */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 380px;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px; left: 15px;
+            background: none; border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .settings-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* الشريط السفلي الثابت (4 خانات) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%;
+            background-color: #181818;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            flex: 1;
+            transition: color 0.2s;
+        }
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- شريط الإشعارات الحي المتحرك -->
+        <div class="live-ticker" id="liveTicker">
+            🔥 أيوب من الشلف ربح $1.00 للتو | كريم ربح $0.05 | أمين ربح $0.10
+        </div>
+
+        <!-- الهيدر ومعلومات الأرصدة وإعدادات الثلاث شرطات -->
+        <div class="header">
+            <div class="top-bar">
+                <div class="site-title-area">
+                    <button class="menu-btn" onclick="openSettings()">☰</button>
+                    <div class="site-title">عجلة الحظ</div>
+                </div>
+                <div class="user-id">ID: <span id="userIdDisplay">229685753</span></div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-title">Rewards</div>
+                    <div class="stat-value" id="rewardsVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Referral</div>
+                    <div class="stat-value" id="referralVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Bonus</div>
+                    <div class="stat-value" id="bonusVal">$0.000</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-title">Total</div>
+                    <div class="stat-value" id="totalVal">$0.000</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">$5.00 UNTIL CASH OUT!</div>
+            </div>
+        </div>
+
+        <!-- 1. قائمة الدعوات والبريد -->
+        <div id="tab-referral" class="section-tab active">
+            <!-- عنصر التاج التنافسي الحقيقي -->
+            <div class="crown-box">
+                <div class="crown-title">👑 معركة التاج (ملك الحظ)</div>
+                <div class="crown-timer" id="crownTimer">ينتهي خلال: 59:59</div>
+                <button class="btn" style="padding: 6px; font-size: 0.8rem;" id="claimCrownBtn" onclick="claimCrown()">امسك التاج الآن</button>
+            </div>
+
+            <div class="card-section">
+                <div class="card-title">دعوات الأصدقاء والبريد</div>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px;">رابط الدعوة الخاص بك:</p>
+                <div class="ref-input-group">
+                    <input type="text" class="input-field" id="refLink" value="https://timtaoucinayoub-hue.github.io/?ref=229685753" readonly>
+                    <button class="btn" style="width: auto;" onclick="copyRefLink()">نسخ</button>
+                </div>
+
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 12px 0 6px 0;">رمز أو بريد تلقي الطلبات:</p>
+                <div class="ref-input-group">
+                    <input type="email" class="input-field" id="userEmail" placeholder="ادخل بريدك الإلكتروني هنا...">
+                    <button class="btn" style="width: auto;" onclick="saveEmail()">حفظ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. قائمة المهام (مع قفل 3 أيام) -->
+        <div id="tab-tasks" class="section-tab">
+            <div class="card-section">
+                <div class="card-title">المهام اليومية</div>
+                <div id="tasksContainer">
+                    <!-- مهمة 1 -->
+                    <div class="task-item" id="task-1">
+                        <div class="task-info">
+                            <h4>مهمة الانضمام لقناة التليجرام</h4>
+                            <p>احصل على $0.20 (تقفل لـ 3 أيام عند إنجازها)</p>
+                        </div>
+                        <button class="btn" style="width: auto; padding: 6px 10px; font-size: 0.8rem;" onclick="completeTask(1, 0.20)">إنجاز</button>
+                    </div>
+                    <!-- مهمة 2 -->
+                    <div class="task-item" id="task-2">
+                        <div class="task-info">
+                            <h4>مهمة متابعة صفحة الفيسبوك</h4>
+                            <p>احصل على $0.15 (تقفل لـ 3 أيام عند إنجازها)</p>
+                        </div>
+                        <button class="btn" style="width: auto; padding: 6px 10px; font-size: 0.8rem;" onclick="completeTask(2, 0.15)">إنجاز</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. قائمة عجلة الحظ (تدور 4 ثوانٍ مع قفل 24 ساعة وإشعار ناري) -->
+        <div id="tab-wheel" class="section-tab">
+            <div class="card-section wheel-box">
+                <div class="card-title" style="text-align: right;">أدر واربح (الأرقام: 0.01 - 3$)</div>
+                <div class="wheel-graphic" id="wheelGraphic">عجلة الحظ</div>
+                
+                <div id="fireAlert" class="fire-notification">🔥 مبروك! لقد ربحت جائزة ممتازة! 🔥</div>
+                <div class="wheel-result" id="wheelResult" style="font-size: 0.95rem; margin: 8px 0;">اضغط لتشغيل العجلة (مرة كل 24 ساعة)</div>
+                
+                <button class="btn" id="spinBtn" onclick="spinWheel()">أدر العجلة الآن</button>
+                <div id="wheelTimer" style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 8px;"></div>
+            </div>
+        </div>
+
+        <!-- 4. قائمة السحب (مرتبة عمودياً، مسافات مريحة، صور، وحتى 5 دولار) -->
+        <div id="tab-withdraw" class="section-tab">
+            <div class="card-section">
+                <div class="card-title">طرق السحب (حتى 5 دولار كحد أدنى)</div>
+                <div class="withdraw-list">
+                    <!-- بريدي موب -->
+                    <div class="withdraw-item" onclick="requestWithdraw('بريدي موب')">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/banknotes.png" class="withdraw-icon" alt="BaridiMob">
+                            <span class="withdraw-name">بريدي موب (BaridiMob)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">سحب</span>
+                    </div>
+                    <!-- فري فاير -->
+                    <div class="withdraw-item" onclick="requestWithdraw('شحن فري فاير')">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/fire-element.png" class="withdraw-icon" alt="Free Fire">
+                            <span class="withdraw-name">شحن فري فاير (Free Fire)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">شحن</span>
+                    </div>
+                    <!-- ببجي -->
+                    <div class="withdraw-item" onclick="requestWithdraw('شحن ببجي')">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/controller.png" class="withdraw-icon" alt="PUBG">
+                            <span class="withdraw-name">شحن ببجي (PUBG Mobile)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">شحن</span>
+                    </div>
+                    <!-- باي بال -->
+                    <div class="withdraw-item" onclick="requestWithdraw('باي بال')">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/paypal.png" class="withdraw-icon" alt="PayPal">
+                            <span class="withdraw-name">باي بال (PayPal)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">سحب</span>
+                    </div>
+                    <!-- فيزا -->
+                    <div class="withdraw-item" onclick="requestWithdraw('بطاقة فيزا')">
+                        <div class="withdraw-info">
+                            <img src="https://img.icons8.com/color/48/visa.png" class="withdraw-icon" alt="Visa">
+                            <span class="withdraw-name">بطاقة فيزا (Visa Card)</span>
+                        </div>
+                        <span style="color: var(--accent-color); font-size: 0.75rem;">سحب</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- نافذة الإعدادات الشاملة (الثلاث شرطات) -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeSettings()">×</button>
+            <h3 style="color: var(--accent-color); margin-bottom: 15px; font-size: 1.1rem;">إعدادات الحساب</h3>
+            
+            <div class="settings-item">
+                <span>حالة الحساب:</span>
+                <span style="color: #4CAF50; font-weight: bold;">نشط وآمن</span>
+            </div>
+            <div class="settings-item">
+                <span>معرّف المستخدم (ID):</span>
+                <span style="color: var(--text-secondary);">229685753</span>
+            </div>
+            <div class="settings-item">
+                <span>سجل الأرباح:</span>
+                <span id="modalHistory">لا توجد عمليات سحب بعد</span>
+            </div>
+            <div class="settings-item" style="border: none; flex-direction: column; align-items: flex-start; gap: 5px;">
+                <span>الدعم والمساعدة:</span>
+                <button class="btn" style="padding: 6px; font-size: 0.8rem;" onclick="alert('للدعم، تواصل معنا عبر بريدك المسجل.')">تواصل مع الدعم</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الشريط السفلي الثابت (4 خانات) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('referral', this)">
+            <span class="nav-icon">👥</span>
+            <span>الدعوات</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('tasks', this)">
+            <span class="nav-icon">📋</span>
+            <span>المهام</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('wheel', this)">
+            <span class="nav-icon">🎡</span>
+            <span>عجلة الحظ</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('withdraw', this)">
+            <span class="nav-icon">💳</span>
+            <span>السحب</span>
+        </button>
+    </nav>
+
+    <script>
+        let totalEarnings = 0.000;
+        let currentRotation = 0;
+        let isSpinning = false;
+
+        function updateUI() {
+            document.getElementById('totalVal').innerText = '$' + totalEarnings.toFixed(3);
+            document.getElementById('rewardsVal').innerText = '$' + totalEarnings.toFixed(3);
+            
+            let percentage = (totalEarnings / 5.0) * 100;
+            if (percentage > 100) percentage = 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+
+            let remaining = 5.0 - totalEarnings;
+            if (remaining < 0) remaining = 0;
+            document.getElementById('progressText').innerText = '$' + remaining.toFixed(2) + ' UNTIL CASH OUT!';
+        }
+
+        // التبديل بين القوائم
+        function switchTab(tabName, btnElement) {
+            document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // نسخ رابط الدعوة
+        function copyRefLink() {
+            const refInput = document.getElementById('refLink');
+            refInput.select();
+            navigator.clipboard.writeText(refInput.value);
+            alert('تم نسخ رابط الدعوة بنجاح!');
+        }
+
+        // حفظ البريد الإلكتروني
+        function saveEmail() {
+            const email = document.getElementById('userEmail').value;
+            if(email) {
+                alert('تم حفظ البريد الإلكتروني بنجاح لتلقي الطلبات وإشعارات المهام: ' + email);
+            } else {
+                alert('الرجاء إدخال بريد صالح أولاً!');
+            }
+        }
+
+        // فتح وإغلاق الإعدادات (الثلاث شرطات)
+        function openSettings() {
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
+
+        // نظام عجلة الحظ (تدور 4 ثوانٍ، مرة كل 24 ساعة، مع الأرقام وإشعار ناري)
+        function spinWheel() {
+            const lastSpin = localStorage.getItem('lastSpinTime');
+            const now = new Date().getTime();
+            if (lastSpin && (now - lastSpin < 24 * 60 * 60 * 1000)) {
+                alert('عجلة الحظ مبرمجة لتدور مرة واحدة كل 24 ساعة. عُد لاحقاً!');
+                return;
+            }
+
+            if (isSpinning) return;
+            isSpinning = true;
+            
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+            document.getElementById('fireAlert').style.display = 'none';
+            document.getElementById('wheelResult').innerText = 'جاري تدوير العجلة...';
+
+            const rand = Math.random();
+            let prize = 0.01;
+            if (rand < 0.60) prize = 0.01;
+            else if (rand < 0.85) prize = 0.05;
+            else if (rand < 0.96) prize = 0.10;
+            else if (rand < 0.99) prize = 1.00;
+            else prize = 3.00;
+
+            currentRotation += 1800 + Math.floor(Math.random() * 360);
+            const wheel = document.getElementById('wheelGraphic');
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            wheel.innerText = `$${prize.toFixed(2)}`;
+
+            setTimeout(() => {
+                totalEarnings += prize;
+                updateUI();
+                
+                // إظهار الإشعار الناري الاحتفالي
+                const fireAlert = document.getElementById('fireAlert');
+                fireAlert.innerText = `🔥 مبروك! ربحت: $${prize.toFixed(2)} 🔥`;
+                fireAlert.style.display = 'block';
+
+                document.getElementById('wheelResult').innerText = `انتهت اللفة! ربحت $${prize.toFixed(2)}`;
+                
+                localStorage.setItem('lastSpinTime', now);
+                isSpinning = false;
+                spinBtn.disabled = false;
+            }, 4000);
+        }
+
+        // نظام المهام مع قفل 3 أيام
+        function completeTask(taskId, reward) {
+            const taskKey = 'task_lock_' + taskId;
+            const lastComplete = localStorage.getItem(taskKey);
+            const now = new Date().getTime();
+            const threeDays = 3 * 24 * 60 * 60 * 1000;
+
+            if (lastComplete && (now - lastComplete < threeDays)) {
+                alert('هذه المهمة متممة ولا يمكن إعادتها إلا بعد مرور 3 أيام!');
+                return;
+            }
+
+            totalEarnings += reward;
+            updateUI();
+            localStorage.setItem(taskKey, now);
+            alert(`مبروك! تم إنجاز المهمة وإضافة $${reward} لرصيدك. ستتجدد بعد 3 أيام.`);
+        }
+
+        // نظام التاج الحقيقي التنافسي
+        function claimCrown() {
+            const btn = document.getElementById('claimCrownBtn');
+            btn.disabled = true;
+            btn.innerText = 'أنت تملك التاج الآن! 👑';
+            totalEarnings += 0.50;
+            updateUI();
+            alert('مبروك! تم التقاط التاج بنجاح وإضافة مكافأة $0.50 لرصيدك.');
+        }
+
+        // طلب السحب (شرط 5 دولار والمسافات)
+        function requestWithdraw(method) {
+            if (totalEarnings < 5.0) {
+                alert(`عذراً، الحد الأدنى للسحب هو $5.00. أكمل حتى 5 دولار لفتح السحب! رصيدك الحالي: $${totalEarnings.toFixed(3)}`);
+            } else {
+                alert(`تم تقديم طلب السحب بنجاح عبر ${method}! سيتم المعالجة قريباً.`);
+                document.getElementById('modalHistory').innerText = `تم طلب سحب عبر ${method} بنجاح.`;
+            }
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
